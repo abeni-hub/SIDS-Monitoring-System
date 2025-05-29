@@ -3,6 +3,9 @@ from rest_framework.response import Response
 import pandas as pd
 import joblib
 import os
+from django.http import JsonResponse
+from .models import PredictionRecord
+from .serializers import PredictionRecordSerializer
 
 # Load model from the 'model' folder once at the top
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -46,3 +49,9 @@ def get_latest_sids_data(request):
         return Response(latest_data)
     else:
         return Response({'message': 'No data available yet.'})
+
+
+def all_predictions(request):
+    records = PredictionRecord.objects.all()
+    serializer = PredictionRecordSerializer(records, many=True)
+    return Response(serializer.data)
