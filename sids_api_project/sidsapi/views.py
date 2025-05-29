@@ -50,8 +50,16 @@ def get_latest_sids_data(request):
     else:
         return Response({'message': 'No data available yet.'})
 
-
+@api_view(['GET', 'POST'])
 def all_predictions(request):
-    records = PredictionRecord.objects.all()
-    serializer = PredictionRecordSerializer(records, many=True)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        records = PredictionRecord.objects.all().order_by('-timestamp')
+        serializer = PredictionRecordSerializer(records, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = PredictionRecordSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
