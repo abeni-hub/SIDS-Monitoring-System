@@ -83,12 +83,16 @@ If at risk, the system triggers a GSM call to notify the caregiver immediately.
 
 🖼️ System Architecture
 flowchart TD
+
     A[Infant Sensors\n(Heartbeat, Temp, etc.)] --> B[Raspberry Pi]
     B --> C[Django REST API\n(Backend)]
+    
     C --> D[Database\n(SQLite/PostgreSQL)]
     C --> E[ML Model\n(Logistic Regression)]
     C --> F[React Dashboard\n(Web Frontend)]
     B --> G[GSM Module\n(Calls Caregiver if at risk)]
+
+    
 **📬 Contact**
 
 LinkedIn: Abenezer Sileshi
